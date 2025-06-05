@@ -1,0 +1,58 @@
+﻿@page
+@model MiniAccountManagementSystem.Pages.Account.CreateModel
+@{
+    ViewData["Title"] = "Create New Account";
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    <form method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Name" class="control-label"></label>
+                    <input asp-for="Input.Name" class="form-control" />
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.ParentId" class="control-label">Parent Account</label>
+                    <select asp-for="Input.ParentId" class="form-control">
+                        <option value="">-- Select Parent Account --</option>
+                        @foreach (var item in Model.ParentAccounts)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Input.ParentId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Type" class="control-label"></label>
+                    <select asp-for="Input.Type" class="form-control">
+                        <option value="Asset">Asset</option>
+                        <option value="Liability">Liability</option>
+                        <option value="Income">Income</option>
+                        <option value="Expense">Expense</option>
+                    </select>
+                    <span asp-validation-for="Input.Type" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <a asp-page="/Accounts/List" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}Add comment

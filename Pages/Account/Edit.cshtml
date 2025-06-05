@@ -1,0 +1,36 @@
+﻿@page
+@model MiniAccountManagementSystem.Pages.Account.EditModel
+@{
+    ViewData["Title"] = "Edit Account";
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+
+    <form method="post">
+        <input type="hidden" asp-for="Account.Id" />
+
+        <div class="form-group mb-3">
+            <label asp-for="Account.Name" class="form-label"></label>
+            <input asp-for="Account.Name" class="form-control" />
+            <span asp-validation-for="Account.Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Account.ParentId" class="form-label">Parent Account</label>
+            <select asp-for="Account.ParentId" asp-items="Model.ParentAccounts" class="form-control">
+                <option value="">-- Select Parent Account --</option>
+            </select>
+            <span asp-validation-for="Account.ParentId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Account.Type" class="form-label"></label>
+            <select asp-for="Account.Type" asp-items="Model.AccountTypes" class="form-control"></select>
+            <span asp-validation-for="Account.Type" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a asp-page="./List" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

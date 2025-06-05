@@ -9,14 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
+
 
 
 builder.Services.AddAuthentication("Identity.Application")
     .AddCookie("Identity.Application", options =>
     {
         options.LoginPath = "/Auth/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.AccessDeniedPath = "/Auth/AccessDenied";
     });
 
 
