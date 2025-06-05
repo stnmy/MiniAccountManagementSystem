@@ -1,7 +1,37 @@
+using Microsoft.AspNetCore.Identity;
+using MiniAccountManagementSystem.IdentityRelatedStore;
+using MiniAccountManagementSystem.Interfaces;
+using MiniAccountManagementSystem.Models.Identity;
+using MiniAccountManagementSystem.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
+
+
+builder.Services.AddAuthentication("Identity.Application")
+    .AddCookie("Identity.Application", options =>
+    {
+        options.LoginPath = "/Auth/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
+
+
+builder.Services.AddIdentityCore<User>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireNonAlphanumeric = true;
+})
+.AddSignInManager()
+.AddUserStore<UserStore>()
+.AddDefaultTokenProviders();
+
 
 var app = builder.Build();
 
@@ -18,6 +48,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
