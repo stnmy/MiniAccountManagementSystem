@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 
