@@ -33,4 +33,6 @@
         <button type="submit" class="btn btn-primary">Save Changes</button>
         <a asp-page="./List" class="btn btn-secondary">Cancel</a>
     </form>
+    <partial name="_ValidationScriptsPartial" />
+    <div asp-validation-summary="All" class="text-danger"></div>
 </div>

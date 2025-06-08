@@ -55,10 +55,21 @@ namespace MiniAccountManagementSystem.Pages.Account
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
+            {
                 return Page();
+            }
 
-            await _accountRepository.CreateAsync(Input);
-            return RedirectToPage("/account/create");
+            try
+            {
+                await _accountRepository.CreateAsync(Input);
+                return RedirectToPage("/Account/List");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
 
         private string CreateIndentedText(int level, string name)

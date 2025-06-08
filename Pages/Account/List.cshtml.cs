@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MiniAccountManagementSystem.Dtos;
@@ -5,6 +6,7 @@ using MiniAccountManagementSystem.Interfaces;
 
 namespace MiniAccountManagementSystem.Pages.Account
 {
+    [Authorize]
     public class ListModel : PageModel
     {
         private readonly IAccountRepository _accountRepository;

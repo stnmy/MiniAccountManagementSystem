@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using MiniAccountManagementSystem.IdentityRelatedStore;
+using MiniAccountManagementSystem.IdentityRelatedStores;
 using MiniAccountManagementSystem.Interfaces;
 using MiniAccountManagementSystem.Models.Identity;
 using MiniAccountManagementSystem.Repository;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 
@@ -26,16 +29,23 @@ builder.Services.AddAuthentication("Identity.Application")
 
 builder.Services.AddIdentityCore<User>(options =>
 {
-    options.Password.RequireDigit = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireLowercase = true;
     options.Password.RequiredLength = 8;
-    options.Password.RequireNonAlphanumeric = true;
 })
+.AddRoles<Role>()
 .AddSignInManager()
 .AddUserStore<UserStore>()
+.AddRoleStore<RoleStore>()
 .AddDefaultTokenProviders();
 
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("AccountantOnly", policy => policy.RequireRole("Accountant"));
+    options.AddPolicy("AdminOrAccountant", policy =>
+        policy.RequireAssertion(context =>
+            context.User.IsInRole("Admin") || context.User.IsInRole("Accountant")));
+});
 
 var app = builder.Build();
 

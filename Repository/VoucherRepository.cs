@@ -3,16 +3,35 @@ using Microsoft.Data.SqlClient;
 using MiniAccountManagementSystem.Dtos;
 using MiniAccountManagementSystem.Interfaces;
 using System.Data;
+using System.Security.Claims;
 
 namespace MiniAccountManagementSystem.Repository
 {
     public class VoucherRepository : IVoucherRepository
     {
         private readonly string _connectionString;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public VoucherRepository(IConfiguration configuration)
+        public VoucherRepository(
+            IConfiguration configuration,
+            IRoleRepository roleRepository,
+            IHttpContextAccessor httpContextAccessor)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _roleRepository = roleRepository;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        private async Task<int> GetCurrentUserIdAsync()
+        {
+            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+            {
+                throw new UnauthorizedAccessException("User not authenticated.");
+            }
+
+            return userId;
         }
 
         public async Task<IEnumerable<AccountVoucherDto>> GetLeafAccountsAsync()
@@ -26,6 +45,15 @@ namespace MiniAccountManagementSystem.Repository
 
         public async Task SaveVoucherAsync(VoucherDto voucher)
         {
+            var userId = await GetCurrentUserIdAsync();
+            var canSave = await _roleRepository.IsUserInRoleAsync(userId, "Admin") ||
+                          await _roleRepository.IsUserInRoleAsync(userId, "Accountant");
+
+            if (!canSave)
+            {
+                throw new UnauthorizedAccessException("You do not have permission to save vouchers.");
+            }
+
             using var conn = new SqlConnection(_connectionString);
             await conn.OpenAsync();
 

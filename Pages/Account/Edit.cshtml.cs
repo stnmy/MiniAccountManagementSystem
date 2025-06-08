@@ -59,42 +59,47 @@ namespace MiniAccountManagementSystem.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var allAccounts = await _accountRepository.GetAllAsync();
-            var parentOptions = new List<SelectListItem>();
-
-            foreach (var a in allAccounts)
-            {
-                if (a.Id != Account.Id)
-                {
-                    parentOptions.Add(new SelectListItem
-                    {
-                        Value = a.Id.ToString(),
-                        Text = a.Name
-                    });
-                }
-            }
-
-            parentOptions.Insert(0, new SelectListItem { Value = "", Text = "No Parent (Root Level)" });
-
-            ParentAccounts = new SelectList(parentOptions, "Value", "Text", Account.ParentId?.ToString());
-
-            AccountTypes = new SelectList(Enum.GetNames(typeof(AccountType)), Account.Type.ToString());
-
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
             try
             {
+                var allAccounts = await _accountRepository.GetAllAsync();
+                var parentOptions = new List<SelectListItem>();
+
+                foreach (var a in allAccounts)
+                {
+                    if (a.Id != Account.Id)
+                    {
+                        parentOptions.Add(new SelectListItem
+                        {
+                            Value = a.Id.ToString(),
+                            Text = a.Name
+                        });
+                    }
+                }
+
+                parentOptions.Insert(0, new SelectListItem { Value = "", Text = "No Parent (Root Level)" });
+
+                ParentAccounts = new SelectList(parentOptions, "Value", "Text", Account.ParentId?.ToString());
+                AccountTypes = new SelectList(Enum.GetNames(typeof(AccountType)), Account.Type.ToString());
+
+                if (!ModelState.IsValid)
+                {
+                    return Page();
+                }
+
                 await _accountRepository.UpdateAsync(Account);
                 return RedirectToPage("./List");
             }
-            catch (System.Exception ex)
+            catch (UnauthorizedAccessException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+            catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, $"An error occurred while updating the account: {ex.Message}");
                 return Page();
             }
         }
+
     }
 }

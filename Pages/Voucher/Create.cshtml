@@ -8,6 +8,8 @@
     <h2>@ViewData["Title"]</h2>
 
     <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -62,7 +64,6 @@
                             <input asp-for="Voucher.Entries[i].Credit" type="number" step="0.01" class="form-control" value="0" />
                             <span asp-validation-for="Voucher.Entries[i].Credit" class="text-danger"></span>
                         </td>
-
                         <td>
                             <button type="button" class="btn btn-danger remove-entry">Remove</button>
                         </td>
@@ -76,6 +77,8 @@
             <button type="submit" class="btn btn-primary">Save Voucher</button>
         </div>
     </form>
+    <partial name="_ValidationScriptsPartial" />
+    <div asp-validation-summary="All" class="text-danger"></div>
 </div>
 
 @section Scripts {
@@ -84,23 +87,22 @@
     <script>
         $(document).ready(function () {
             $('#addEntry').click(function () {
-                var index = $('#entriesTable tbody tr').length;
-                var row = `
+                const index = $('#entriesTable tbody tr').length;
+                const options = `@Html.Raw(string.Join("", Model.LeafAccounts.Select(a => $"<option value='{a.Value}'>{a.Text}</option>"))))`;
+
+                const row = `
                     <tr>
                         <td>
                             <select name="Voucher.Entries[${index}].AccountId" class="form-control" required>
                                 <option value="">Select Account</option>
-                                @foreach (var account in Model.LeafAccounts)
-                                {
-                                    <option value="@account.Value">@account.Text</option>
-                                }
+                                ${options}
                             </select>
                         </td>
                         <td>
-                            <input name="Voucher.Entries[${index}].Debit" type="number" step="0.01" class="form-control" />
+                            <input name="Voucher.Entries[${index}].Debit" type="number" step="0.01" class="form-control" value="0" />
                         </td>
                         <td>
-                            <input name="Voucher.Entries[${index}].Credit" type="number" step="0.01" class="form-control" />
+                            <input name="Voucher.Entries[${index}].Credit" type="number" step="0.01" class="form-control" value="0" />
                         </td>
                         <td>
                             <button type="button" class="btn btn-danger remove-entry">Remove</button>

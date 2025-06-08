@@ -51,11 +51,33 @@ namespace MiniAccountManagementSystem.Pages.Voucher
                         Text = account.Name
                     });
                 }
+
                 return Page();
             }
 
-            await _voucherRepository.SaveVoucherAsync(Voucher);
-            return RedirectToPage("/Account/List");
+            try
+            {
+                await _voucherRepository.SaveVoucherAsync(Voucher);
+                return RedirectToPage("/Account/List");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+
+                var accounts = await _voucherRepository.GetLeafAccountsAsync();
+                LeafAccounts = new List<SelectListItem>();
+
+                foreach (var account in accounts)
+                {
+                    LeafAccounts.Add(new SelectListItem
+                    {
+                        Value = account.Id.ToString(),
+                        Text = account.Name
+                    });
+                }
+
+                return Page();
+            }
         }
     }
 }
