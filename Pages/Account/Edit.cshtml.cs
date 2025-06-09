@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MiniAccountManagementSystem.Data.Enums;
@@ -7,6 +8,7 @@ using MiniAccountManagementSystem.Interfaces;
 
 namespace MiniAccountManagementSystem.Pages.Account
 {
+    [Authorize]
     public class EditModel : PageModel
     {
         private readonly IAccountRepository _accountRepository;

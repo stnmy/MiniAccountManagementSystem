@@ -1,0 +1,5 @@
+VoucherDate,ReferenceNo,VoucherType,AccountName,Debit,Credit
+2025-06-05,100,Journal,Brac Bank Savings Account,100.00,100.00
+2025-06-05,Holamami,Journal,Brac Bank Savings Account,0.00,100.00
+2025-06-06,Checkin Fr,Receipt,Brac Bank Savings Account,0.00,0.00
+2025-06-09,Checking in,Journal,Brac Bank Savings Account,0.00,4000.00

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MiniAccountManagementSystem.Dtos;
@@ -6,6 +7,7 @@ using MiniAccountManagementSystem.Interfaces;
 
 namespace MiniAccountManagementSystem.Pages.Account
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly IAccountRepository _accountRepository;
