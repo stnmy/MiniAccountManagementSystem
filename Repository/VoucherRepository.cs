@@ -91,5 +91,13 @@ namespace MiniAccountManagementSystem.Repository
                 throw;
             }
         }
+        public async Task<IEnumerable<VoucherEntryExportDto>> GetVoucherEntriesByAccountAsync(int accountId)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            return await conn.QueryAsync<VoucherEntryExportDto>(
+                "sp_GetVoucherEntriesByAccount",
+                new { AccountId = accountId },
+                commandType: CommandType.StoredProcedure);
+        }
     }
 }

@@ -1,0 +1,26 @@
+﻿@page
+@model MiniAccountManagementSystem.Pages.Voucher.ExportModel
+@{
+    ViewData["Title"] = "Export Voucher Entries";
+}
+
+<h2>Export Voucher Entries</h2>
+
+<form method="post">
+    <div class="form-group">
+        Add commentMore actions
+        <label for="AccountId">Select Account</label>
+        <select asp-for="SelectedAccountId" class="form-control" asp-items="Model.Accounts">
+            <option value="">-- Select Account --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Export to CSV</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.CsvFileName))
+{
+    <div class="mt-3">
+        <a href="@Url.Content(Model.CsvFileName)" class="btn btn-success">Download CSV</a>
+    </div>
+}

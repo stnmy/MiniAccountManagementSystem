@@ -2,7 +2,7 @@
 using MiniAccountManagementSystem.Interfaces;
 using MiniAccountManagementSystem.Models.Identity;
 
-namespace MiniAccountManagementSystem.IdentityRelatedStore
+namespace MiniAccountManagementSystem.IdentityRelatedStores
 {
     public class UserStore : IUserStore<User>, IUserPasswordStore<User>
     {

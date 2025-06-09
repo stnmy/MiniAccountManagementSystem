@@ -1,0 +1,6 @@
+VoucherDate,ReferenceNo,VoucherType,AccountName,Debit,Credit
+2025-06-04,hola,Journal,Brac Bank Current Account,100.00,100.00
+2025-06-05,Holamami,Journal,Brac Bank Current Account,100.00,0.00
+2025-06-05,please,Journal,Brac Bank Current Account,100.00,0.00
+2025-06-09,Checking in,Journal,Brac Bank Current Account,100.00,0.00
+2025-06-09,Hola,Journal,Brac Bank Current Account,10000.00,0.00
