@@ -1,0 +1,7 @@
+CREATE TABLE Vouchers (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    VoucherDate DATE NOT NULL,
+    ReferenceNo NVARCHAR(50) NOT NULL,
+    VoucherType NVARCHAR(50) NOT NULL,
+    CreatedDate DATETIME NOT NULL DEFAULT GETDATE()
+);

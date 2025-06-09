@@ -1,0 +1,5 @@
+CREATE OR ALTER PROCEDURE [dbo].[sp_GetAllRoles]
+AS
+BEGIN
+    SELECT Id, Name FROM Roles
+END

@@ -22,7 +22,7 @@ Assingment for Junior .Net Developer position at Qtec Solution Limited
 - Made the readme file more informative with installation instructions and screenshots.
 
 
-- 
+
 # Screenshots
 ![Login Screen](Screenshots/LoginScreen.png)
 ![Account List](Screenshots/AccountList.png)

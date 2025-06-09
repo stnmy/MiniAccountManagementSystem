@@ -1,0 +1,7 @@
+CREATE TABLE Accounts (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    ParentId INT NULL,
+    Type NVARCHAR(50) NOT NULL,
+    FOREIGN KEY (ParentId) REFERENCES Accounts(Id)
+);
